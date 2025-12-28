@@ -53,11 +53,16 @@ export default function Tictactoe() {
         const el = cellRefs.current[idx];
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return { x: r.left + r.width / 2 - rect.left, y: r.top + r.height / 2 - rect.top };
+        return {
+          x: r.left + r.width / 2 - rect.left,
+          y: r.top + r.height / 2 - rect.top,
+        };
       });
       if (centers.some((c) => c === null)) return setLinePath(null);
 
-      setLinePath(`M ${centers[0].x} ${centers[0].y} L ${centers[2].x} ${centers[2].y}`);
+      setLinePath(
+        `M ${centers[0].x} ${centers[0].y} L ${centers[2].x} ${centers[2].y}`
+      );
       const t = setTimeout(() => setLinePath(null), 1200);
       return () => clearTimeout(t);
     } else setLinePath(null);
@@ -83,10 +88,13 @@ export default function Tictactoe() {
 
     const r = calculateWinner(newBoard);
     if (r) {
-      if (r.winner === player1Symbol) setScores((s) => ({ ...s, p1: s.p1 + 1 }));
-      else if (r.winner === player2Symbol) setScores((s) => ({ ...s, p2: s.p2 + 1 }));
+      if (r.winner === player1Symbol)
+        setScores((s) => ({ ...s, p1: s.p1 + 1 }));
+      else if (r.winner === player2Symbol)
+        setScores((s) => ({ ...s, p2: s.p2 + 1 }));
       else setScores((s) => ({ ...s, draws: s.draws + 1 }));
-    } else if (newBoard.every(Boolean)) setScores((s) => ({ ...s, draws: s.draws + 1 }));
+    } else if (newBoard.every(Boolean))
+      setScores((s) => ({ ...s, draws: s.draws + 1 }));
   }
 
   function undo() {
@@ -124,21 +132,24 @@ export default function Tictactoe() {
         {/* SETTINGS */}
         <div className="settings-row">
           <div className="player-settings">
-            {[{
-              name: player1Name,
-              setName: setPlayer1Name,
-              symbol: player1Symbol,
-              setSymbol: setPlayer1Symbol,
-              custom: customSymbol1,
-              setCustom: setCustomSymbol1,
-            }, {
-              name: player2Name,
-              setName: setPlayer2Name,
-              symbol: player2Symbol,
-              setSymbol: setPlayer2Symbol,
-              custom: customSymbol2,
-              setCustom: setCustomSymbol2,
-            }].map((player, idx) => (
+            {[
+              {
+                name: player1Name,
+                setName: setPlayer1Name,
+                symbol: player1Symbol,
+                setSymbol: setPlayer1Symbol,
+                custom: customSymbol1,
+                setCustom: setCustomSymbol1,
+              },
+              {
+                name: player2Name,
+                setName: setPlayer2Name,
+                symbol: player2Symbol,
+                setSymbol: setPlayer2Symbol,
+                custom: customSymbol2,
+                setCustom: setCustomSymbol2,
+              },
+            ].map((player, idx) => (
               <div key={idx} className="player-block">
                 <label className="label">Player {idx + 1} Name</label>
                 <input
@@ -152,14 +163,19 @@ export default function Tictactoe() {
                   {PRESET_SYMBOLS.map((s) => (
                     <button
                       key={`p${idx}-${s}`}
-                      className={`symbol-btn ${player.symbol === s ? "active" : ""}`}
+                      className={`symbol-btn ${
+                        player.symbol === s ? "active" : ""
+                      }`}
                       disabled={symbolsLocked}
                       onClick={() => {
                         if (symbolsLocked) return;
-                        if (s === (idx === 0 ? player2Symbol : player1Symbol)) return;
+                        if (s === (idx === 0 ? player2Symbol : player1Symbol))
+                          return;
                         player.setSymbol(s);
                       }}
-                    >{s}</button>
+                    >
+                      {s}
+                    </button>
                   ))}
                   <input
                     className="symbol-custom"
@@ -173,39 +189,69 @@ export default function Tictactoe() {
                     disabled={symbolsLocked}
                     onClick={() => {
                       if (!player.custom.trim()) return;
-                      if (player.custom.trim() === (idx === 0 ? player2Symbol : player1Symbol)) return;
+                      if (
+                        player.custom.trim() ===
+                        (idx === 0 ? player2Symbol : player1Symbol)
+                      )
+                        return;
                       player.setSymbol(player.custom.trim());
                       player.setCustom("");
                     }}
-                  >Use</button>
+                  >
+                    Use
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="settings-actions">
-            <button className="ttt-btn ghost" onClick={() => {
-              setPlayer1Name("Player 1");
-              setPlayer2Name("Player 2");
-              setPlayer1Symbol("X");
-              setPlayer2Symbol("O");
-              resetBoard(true);
-            }}>Reset Settings + Scores</button>
-            <button className="ttt-btn ghost" onClick={() => setShowRules(true)}>Game Rules</button>
+            <button
+              className="ttt-btn ghost"
+              onClick={() => {
+                setPlayer1Name("Player 1");
+                setPlayer2Name("Player 2");
+                setPlayer1Symbol("X");
+                setPlayer2Symbol("O");
+                resetBoard(true);
+              }}
+            >
+              Reset Settings + Scores
+            </button>
+            <button
+              className="ttt-btn ghost"
+              onClick={() => setShowRules(true)}
+            >
+              Game Rules
+            </button>
           </div>
         </div>
 
         {/* CONTROLS */}
         <div className="ttt-controls" style={{ flexWrap: "wrap" }}>
           <div className="ttt-actions">
-            <button className="ttt-btn" onClick={() => resetBoard(false)}>Restart</button>
-            <button className="ttt-btn ghost" onClick={undo} disabled={!history.length}>Undo</button>
+            <button className="ttt-btn" onClick={() => resetBoard(false)}>
+              Restart
+            </button>
+            <button
+              className="ttt-btn ghost"
+              onClick={undo}
+              disabled={!history.length}
+            >
+              Undo
+            </button>
           </div>
 
           <div className="ttt-scores">
-            <div className="pill">{player1Name}: <strong>{scores.p1}</strong></div>
-            <div className="pill">Draws: <strong>{scores.draws}</strong></div>
-            <div className="pill">{player2Name}: <strong>{scores.p2}</strong></div>
+            <div className="pill">
+              {player1Name}: <strong>{scores.p1}</strong>
+            </div>
+            <div className="pill">
+              Draws: <strong>{scores.draws}</strong>
+            </div>
+            <div className="pill">
+              {player2Name}: <strong>{scores.p2}</strong>
+            </div>
           </div>
         </div>
 
@@ -215,16 +261,22 @@ export default function Tictactoe() {
             {board.map((cell, i) => (
               <button
                 key={i}
-                className={`ttt-cell ${result?.line?.includes(i) ? "ttt-win" : ""}`}
+                className={`ttt-cell ${
+                  result?.line?.includes(i) ? "ttt-win" : ""
+                }`}
                 onClick={() => handleClick(i)}
                 ref={(el) => (cellRefs.current[i] = el)}
-              >{cell}</button>
+              >
+                {cell}
+              </button>
             ))}
           </div>
 
           <svg
             className="ttt-line-svg"
-            viewBox={`0 0 ${boardWrapRef.current?.offsetWidth || 420} ${boardWrapRef.current?.offsetHeight || 420}`}
+            viewBox={`0 0 ${boardWrapRef.current?.offsetWidth || 420} ${
+              boardWrapRef.current?.offsetHeight || 420
+            }`}
           >
             {linePath && <path d={linePath} className="ttt-line" fill="none" />}
           </svg>
@@ -232,7 +284,13 @@ export default function Tictactoe() {
 
         <div className="ttt-footer">
           <div className="ttt-status">
-            {result ? (result.winner ? `${playerLabel(result.winner)} wins!` : "Draw") : `Turn: ${xIsNext ? player1Name : player2Name} (${currentSymbol()})`}
+            {result
+              ? result.winner
+                ? `${playerLabel(result.winner)} wins!`
+                : "Draw"
+              : `Turn: ${
+                  xIsNext ? player1Name : player2Name
+                } (${currentSymbol()})`}
           </div>
         </div>
       </div>
@@ -241,10 +299,24 @@ export default function Tictactoe() {
       {result && (
         <div className="winner-overlay">
           <div className="winner-card">
-            <h2 className="winner-title">{result.winner ? `${playerLabel(result.winner)} wins!` : "It's a Draw!"}</h2>
+            <h2 className="winner-title">
+              {result.winner
+                ? `${playerLabel(result.winner)} wins!`
+                : "It's a Draw!"}
+            </h2>
             <div className="winner-actions">
-              <button className="ttt-btn" onClick={() => resetBoard(false)}>Play Again</button>
-              <button className="ttt-btn ghost" onClick={() => { setScores({ p1: 0, p2: 0, draws: 0 }); resetBoard(true); }}>Reset Scores</button>
+              <button className="ttt-btn" onClick={() => resetBoard(false)}>
+                Play Again
+              </button>
+              <button
+                className="ttt-btn ghost"
+                onClick={() => {
+                  setScores({ p1: 0, p2: 0, draws: 0 });
+                  resetBoard(true);
+                }}
+              >
+                Reset Scores
+              </button>
             </div>
           </div>
         </div>
@@ -261,24 +333,15 @@ export default function Tictactoe() {
               <li>Three in a row wins.</li>
               <li>If grid is full → Draw.</li>
             </ul>
-            <button className="ttt-btn" onClick={() => setShowRules(false)}>Close</button>
+            <button className="ttt-btn" onClick={() => setShowRules(false)}>
+              Close
+            </button>
           </div>
         </div>
       )}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect, useRef } from "react";
 // import "./Tictactoe.css";
@@ -311,7 +374,6 @@ export default function Tictactoe() {
 //   const [board, setBoard] = useState(Array(9).fill(null));
 //   const [xIsNext, setXIsNext] = useState(true);
 
-
 //   const [history, setHistory] = useState([]);
 
 //   const [scores, setScores] = useState({ p1: 0, p2: 0, draws: 0 });
@@ -328,7 +390,6 @@ export default function Tictactoe() {
 
 //   const [showRules, setShowRules] = useState(false);
 
-  
 //   const [symbolsLocked, setSymbolsLocked] = useState(false);
 
 //   const result = calculateWinner(board);
@@ -377,18 +438,16 @@ export default function Tictactoe() {
 //     const newBoard = [...board];
 //     newBoard[i] = currentSymbol();
 
-    
 //     setHistory((h) => [
 //       ...h,
 //       {
-//         board: board.slice(),         
-//         xIsNext,                      
-//         scores: { ...scores },        
-//         symbolsLocked,                
+//         board: board.slice(),
+//         xIsNext,
+//         scores: { ...scores },
+//         symbolsLocked,
 //       },
 //     ]);
 
-    
 //     setBoard(newBoard);
 //     setXIsNext((p) => !p);
 
@@ -418,7 +477,6 @@ export default function Tictactoe() {
 //     setHistory(newHistory);
 //     setLinePath(null);
 
-    
 //     if (newHistory.length === 0) {
 //       setSymbolsLocked(false);
 //     }
@@ -612,7 +670,6 @@ export default function Tictactoe() {
 //           <svg className="ttt-line-svg">{linePath && <path d={linePath} className="ttt-line" fill="none" />}</svg>
 //         </main>
 
-        
 //         <div className="ttt-footer">
 //           <div className="ttt-status">
 //             {result ? (result.winner ? `${playerLabel(result.winner)} wins!` : "Draw") : `Turn: ${xIsNext ? player1Name : player2Name} (${currentSymbol()})`}
