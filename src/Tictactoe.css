@@ -240,15 +240,23 @@ html, body, #root {
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+/* Main content area wrapper */
+.ttt-main-content {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 /* Controls & scores */
 .ttt-controls {
-  grid-area: main;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: clamp(10px, 1.5vw, 12px);
-  margin-bottom: 12px;
+  margin-bottom: clamp(12px, 2vw, 16px);
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .ttt-actions {
@@ -282,11 +290,11 @@ html, body, #root {
 
 /* Board */
 .ttt-board-wrap {
-  grid-area: main;
   position: relative;
-  margin: clamp(6px, 1vw, 20px) auto;
+  margin: 0 auto;
   width: 100%;
   max-width: 420px;
+  flex: 1;
 }
 
 .ttt-board {
@@ -438,23 +446,14 @@ html, body, #root {
     min-height: auto;
   }
 
-  .ttt-board-wrap {
-    max-width: 100%;
-    margin-top: clamp(12px, 3vw, 20px);
-  }
-
-  .ttt-board {
-    margin-top: clamp(12px, 3vw, 30px);
-    gap: clamp(8px, 2vw, 12px);
-  }
-
-  .ttt-cell {
-    font-size: clamp(32px, 10vw, 40px);
+  .ttt-main-content {
+    width: 100%;
   }
 
   .ttt-controls {
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: clamp(12px, 2vw, 16px);
   }
 
   .ttt-actions {
@@ -466,6 +465,20 @@ html, body, #root {
     width: 100%;
     justify-content: center;
     margin-top: clamp(8px, 2vw, 12px);
+  }
+
+  .ttt-board-wrap {
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .ttt-board {
+    margin-top: clamp(12px, 3vw, 30px);
+    gap: clamp(8px, 2vw, 12px);
+  }
+
+  .ttt-cell {
+    font-size: clamp(32px, 10vw, 40px);
   }
 
   .pill {
@@ -496,6 +509,10 @@ html, body, #root {
 
   .symbol-custom {
     width: clamp(60px, 15vw, 70px);
+  }
+
+  .ttt-controls {
+    margin-bottom: clamp(10px, 2vw, 14px);
   }
 
   .ttt-board {
@@ -581,8 +598,12 @@ html, body, #root {
     text-align: center;
   }
 
+  .ttt-controls {
+    margin-bottom: 12px;
+  }
+
   .ttt-board-wrap {
-    margin-top: 12px;
+    margin-top: 0;
   }
 
   .ttt-board {

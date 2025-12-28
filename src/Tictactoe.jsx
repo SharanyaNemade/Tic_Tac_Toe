@@ -227,36 +227,38 @@ export default function Tictactoe() {
           </div>
         </div>
 
-        {/* CONTROLS */}
-        <div className="ttt-controls" style={{ flexWrap: "wrap" }}>
-          <div className="ttt-actions">
-            <button className="ttt-btn" onClick={() => resetBoard(false)}>
-              Restart
-            </button>
-            <button
-              className="ttt-btn ghost"
-              onClick={undo}
-              disabled={!history.length}
-            >
-              Undo
-            </button>
+        {/* MAIN CONTENT AREA */}
+        <div className="ttt-main-content">
+          {/* CONTROLS */}
+          <div className="ttt-controls" style={{ flexWrap: "wrap" }}>
+            <div className="ttt-actions">
+              <button className="ttt-btn" onClick={() => resetBoard(false)}>
+                Restart
+              </button>
+              <button
+                className="ttt-btn ghost"
+                onClick={undo}
+                disabled={!history.length}
+              >
+                Undo
+              </button>
+            </div>
+
+            <div className="ttt-scores">
+              <div className="pill">
+                {player1Name}: <strong>{scores.p1}</strong>
+              </div>
+              <div className="pill">
+                Draws: <strong>{scores.draws}</strong>
+              </div>
+              <div className="pill">
+                {player2Name}: <strong>{scores.p2}</strong>
+              </div>
+            </div>
           </div>
 
-          <div className="ttt-scores">
-            <div className="pill">
-              {player1Name}: <strong>{scores.p1}</strong>
-            </div>
-            <div className="pill">
-              Draws: <strong>{scores.draws}</strong>
-            </div>
-            <div className="pill">
-              {player2Name}: <strong>{scores.p2}</strong>
-            </div>
-          </div>
-        </div>
-
-        {/* BOARD */}
-        <main className="ttt-board-wrap" ref={boardWrapRef}>
+          {/* BOARD */}
+          <main className="ttt-board-wrap" ref={boardWrapRef}>
           <div className="ttt-board">
             {board.map((cell, i) => (
               <button
@@ -280,7 +282,8 @@ export default function Tictactoe() {
           >
             {linePath && <path d={linePath} className="ttt-line" fill="none" />}
           </svg>
-        </main>
+          </main>
+        </div>
 
         <div className="ttt-footer">
           <div className="ttt-status">
